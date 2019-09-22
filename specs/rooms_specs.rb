@@ -8,11 +8,12 @@ class TestRoom < Minitest::Test
 
   def setup
     @room1 = Room.new(1)
-    @guest1 = Guest.new("Alex", 20)
-    @guest2 = Guest.new("David", 20)
-    @guest3 = Guest.new("Oli", 20)
-    @guest4 = Guest.new("Mikey", 20)
+    @guest1 = Guest.new("Alex", 20, "Someone Great")
+    @guest2 = Guest.new("David", 20, "All My Friends")
+    @guest3 = Guest.new("Oli", 20, "Mr Brightside")
+    @guest4 = Guest.new("Mikey", 20, "Juicy")
     @song1 = Song.new("Mr Brightside")
+    @song2 = Song.new("Dancing Queen")
   end
 
   def test_get_room_number()
@@ -47,5 +48,21 @@ class TestRoom < Minitest::Test
   def test_entry_fee()
     @room1.check_in_guest(@guest1)
     assert_equal(17, @guest1.wallet)
+  end
+
+  def test_celebrate_fav_song()
+    @room1.check_in_guest(@guest1)
+    @room1.check_in_guest(@guest2)
+    @room1.check_in_guest(@guest3)
+    @room1.add_song_to_room(@song1)
+    @room1.add_song_to_room(@song2)
+    assert_equal("Whoo!", @room1.celebrate_fav_song())
+  end
+
+  def test_tab_for_room()
+    @room1.check_in_guest(@guest1)
+    @room1.check_in_guest(@guest2)
+    @room1.check_in_guest(@guest3)
+    assert_equal(9, @room1.till)
   end
 end
